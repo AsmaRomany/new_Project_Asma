@@ -59,6 +59,17 @@
         android:hint="Enter place description"
         android:textSize="15sp"
         android:textColorHint="@color/white"/>
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/plasec"
+        android:outlineAmbientShadowColor="@color/white"
+        android:contentDescription="Place type"
+        android:outlineSpotShadowColor="@color/white"
+
+        />
+
 
     <Button
         android:id="@+id/saveButton"
@@ -69,5 +80,6 @@
         android:layout_marginTop="20dp"
         android:textSize="20sp"
         android:text="Save" />
+
 </LinearLayout>
 </LinearLayout>

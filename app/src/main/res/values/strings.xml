@@ -30,7 +30,17 @@
     <!--    AIzaSyDQRo11Au3mI9ZM2Ppp-015nLMHZQp2FSs-->
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="passowrd">passowrd\n</string>
+    <string name="passowrd" translatable="false">passowrd\n</string>
+    <string-array name="plasec">
+        <item>Restaurant</item>
+        <item>Dorm</item>
+        <item>Dry Clean</item>
+        <item>Salon</item>
+        <item>SuperMarket</item>
+        <item>Study Place</item>
+        <!-- Add more items as needed -->
+    </string-array>
+
 
 
 </resources>
