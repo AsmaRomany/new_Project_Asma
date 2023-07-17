@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,9 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
     private CheckBox terms_conditions;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private  RadioGroup radioGroup;
+    private RadioButton radioButton1,radioButton2;
+
 
     @Override
     public void onStart() {
@@ -68,8 +73,21 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
         view = inflater.inflate(R.layout.activity_signup, container, false);
         initViews();
         setListeners();
-        return view;
 
+//        radioGroup = view.findViewById(R.id.radioGroup);
+//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                RadioButton radioButton = view.findViewById(checkedId);
+//                String selectedOption = radioButton.getText().toString();
+//                Toast.makeText(getActivity(), "Selected option: " + selectedOption, Toast.LENGTH_SHORT).show();
+//
+//                onClick(view);
+//
+//
+//            }
+//        });
+        return view;
     }
 
     // Initialize all views
@@ -83,6 +101,8 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
         signUpButton = view.findViewById(R.id.signUpBtn);
         login = view.findViewById(R.id.already_user);
         terms_conditions = view.findViewById(R.id.terms_conditions);
+        radioGroup = view.findViewById(R.id.radioGroup);
+        
 
         // Initialize Firebase Auth and Firestore
         mAuth = FirebaseAuth.getInstance();
@@ -129,8 +149,6 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
         String getEmailId = email.getText().toString();
         String getMobileNumber = mobileNumber.getText().toString();
         String getLocation = location.getText().toString();
-
-
         String getPassword = password.getText().toString();
         String getConfirmPassword = confirmPassword.getText().toString();
 
@@ -158,7 +176,18 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
         // Make sure the user has checked the Terms and Conditions checkbox
         else if (!terms_conditions.isChecked()) {
             new CustomToast().Show_Toast(getActivity(), view, "Please accept the Terms and Conditions.");
-        } else {
+        }
+        else if (!radioButton2.isChecked()&& !radioButton1.isChecked()){
+            new CustomToast().Show_Toast(getActivity(), view, "This field is required.");
+        }else {
+            // Get the selected radio button value
+            int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+            RadioButton selectedRadioButton = view.findViewById(selectedRadioButtonId);
+            String selectedOption = selectedRadioButton.getText().toString();
+
+            // Determine if the registration is for an owner
+            boolean isOwner = selectedOption.equals("Owner");
+
             // Create user with email and password
             mAuth.createUserWithEmailAndPassword(getEmailId, getPassword)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -180,6 +209,7 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
                                     userInfo.put("email", getEmailId);
                                     userInfo.put("mobileNumber", getMobileNumber);
                                     userInfo.put("location", getLocation);
+                                    userInfo.put("isOwner", isOwner);
 
                                     // Set the user information in the Firestore document
                                     userRef.set(userInfo)
@@ -187,8 +217,13 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     // Document successfully written
-                                                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                                                    startActivity(intent);
+                                                    if (isOwner) {
+                                                        // Handle owner registration (specify owner of a place) here
+                                                        handleOwnerRegistration(userId);
+                                                    } else {
+                                                        // Handle user registration here
+                                                        handleUserRegistration();
+                                                    }
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
@@ -208,5 +243,22 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
                     });
         }
     }
+
+    // Method to handle owner registration (specify owner of a place)
+    private void handleOwnerRegistration(String ownerId) {
+
+        // For example, you can start a new activity to add the place details and associate it with the owner
+        Intent intent = new Intent(getActivity(), OwnerPlaceRegistrationActivity.class);
+        intent.putExtra("ownerId", ownerId);
+        startActivity(intent);
+    }
+
+    // Method to handle user registration
+    private void handleUserRegistration() {
+        Intent intent = new Intent(getActivity(), Profile.class);
+        startActivity(intent);
+    }
+
+
 }
 
