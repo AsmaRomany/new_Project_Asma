@@ -28,6 +28,7 @@ public class OwnerPlaceRegistrationActivity extends AppCompatActivity {
     private EditText placeDescriptionEditText;
     private Button saveButton;
 
+
     private FirebaseFirestore db;
 
     @Override
@@ -45,6 +46,7 @@ public class OwnerPlaceRegistrationActivity extends AppCompatActivity {
         placeNameEditText = findViewById(R.id.placeNameEditText);
         placeAddressEditText = findViewById(R.id.placeAddressEditText);
         placeDescriptionEditText = findViewById(R.id.placeDescriptionEditText);
+
         saveButton = findViewById(R.id.saveButton);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
