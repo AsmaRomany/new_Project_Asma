@@ -114,7 +114,8 @@ private void savePlaceDetails(String ownerId) {
                                       if (placeType.equals("salon") || placeType.equals("Resturant") || placeType.equals("StudyPlaces") || placeType.equals("Dorms")|| placeType.equals("Supermarket")|| placeType.equals("DryClean")) {
                                           DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(placeType);
                                            // Get the generated Firestore document ID
-                                          DatabaseReference placeTypeRef = databaseReference.child(placeType +placeName);
+                                          DatabaseReference placeTypeRef = databaseReference.child( placeName);
+                                          placeTypeRef.child(placeName) ;
 
                                                            placeTypeRef.setValue(placeName)
                                                                           .addOnSuccessListener(new OnSuccessListener<Void>() {
