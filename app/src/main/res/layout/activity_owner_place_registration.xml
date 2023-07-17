@@ -67,6 +67,7 @@
         android:outlineAmbientShadowColor="@color/white"
         android:contentDescription="Place type"
         android:outlineSpotShadowColor="@color/white"
+        android:background="@drawable/top_background"
 
         />
 
