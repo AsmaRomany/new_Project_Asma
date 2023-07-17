@@ -28,10 +28,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
 
 
@@ -73,9 +76,40 @@ public class Owner extends AppCompatActivity implements BottomNavigationView.OnN
             @Override
             public void onClick(View v) {
                 Intent in2;
-                in2 = new Intent(Owner.this, AddFoodItemActivity.class);
-                startActivity(in2);
-                finish();
+                String Owner=OwnerFor();
+
+                if(Owner=="Resturant"){
+                    in2 = new Intent(Owner.this, AddFoodItemActivity.class);
+                    startActivity(in2);
+                    finish();
+                }
+                else if(Owner=="Dorms"){
+                    in2 = new Intent(Owner.this, NewDormActivity.class);
+                    startActivity(in2);
+                    finish();
+                }
+                else if(Owner=="DryClean"){
+                    in2 = new Intent(Owner.this, New_dray_clean_Service.class);
+                    startActivity(in2);
+                    finish();
+                }
+                else if(Owner=="salon"){
+                    in2 = new Intent(Owner.this, NewServiceActivity.class);
+                    startActivity(in2);
+                    finish();
+                }
+                else if(Owner=="Supermarket"){
+                    in2 = new Intent(Owner.this, AddProductActivity.class);
+                    startActivity(in2);
+                    finish();
+                }
+                //مش معمولة
+//                else if(Owner=="StudyPlace"){
+//                    in2 = new Intent(Owner.this, AddProductActivity.class);
+//                    startActivity(in2);
+//                    finish();
+//                }
+
             }
         });
 
@@ -482,11 +516,29 @@ public class Owner extends AppCompatActivity implements BottomNavigationView.OnN
 //        this.textDob = textDob;
 //    }
     public String OwnerFor(){
-        DocumentReference placeRef = db.collection("Places").document();
-        placeRef.get(Source.valueOf("placeType"));
-        String s= placeRef.get(Source.valueOf("placeType")).toString();
-        //if(s=="")
-        return s;
+        FirebaseFirestore db;
+        CollectionReference placesRef;
+        db = FirebaseFirestore.getInstance();
+        placesRef = db.collection("Places");
+        final String[] placeType = {""};
+        placesRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot querySnapshot) {
+                QueryDocumentSnapshot document = null;
+                    // Access the data for each place
+                 placeType[0] = document.getString("placeType");
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Handle failure (e.g., show an error message)
+                Toast.makeText(Owner.this, "Failed to retrieve places", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+         return placeType[0];
     }
 
     @Override
