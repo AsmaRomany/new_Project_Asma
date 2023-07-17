@@ -97,6 +97,7 @@ private void savePlaceDetails(String ownerId) {
 
     // Set the place information in the Firestore document
     placeRef.set(placeInfo)
+
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -104,6 +105,8 @@ private void savePlaceDetails(String ownerId) {
                     Toast.makeText(OwnerPlaceRegistrationActivity.this, "Place details saved successfully.", Toast.LENGTH_SHORT).show();
                     // Optionally, you can navigate to another activity or perform further actions
                     finish(); // Finish the activity after saving the place details
+
+
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -111,8 +114,11 @@ private void savePlaceDetails(String ownerId) {
                 public void onFailure(@NonNull Exception e) {
                     // Error writing document
                     Toast.makeText(OwnerPlaceRegistrationActivity.this, "Failed to save place details.", Toast.LENGTH_SHORT).show();
+
                 }
             });
+
+
 }
 
 }

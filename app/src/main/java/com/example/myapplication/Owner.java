@@ -32,6 +32,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Source;
 
 
 public class Owner extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -480,6 +481,13 @@ public class Owner extends AppCompatActivity implements BottomNavigationView.OnN
 //    public void setTextDob(TextView textDob) {
 //        this.textDob = textDob;
 //    }
+    public String OwnerFor(){
+        DocumentReference placeRef = db.collection("Places").document();
+        placeRef.get(Source.valueOf("placeType"));
+        String s= placeRef.get(Source.valueOf("placeType")).toString();
+        //if(s=="")
+        return s;
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
