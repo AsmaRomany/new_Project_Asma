@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,7 +51,10 @@ public class OwnerPlaceRegistrationActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 savePlaceDetails(ownerId);
+                Intent intent = new Intent(OwnerPlaceRegistrationActivity.this,MainActivity.class);
+                startActivity(intent);
             }
         });
         spinner = findViewById(R.id.spinner);
