@@ -102,6 +102,9 @@ public class Signup_Fragment extends Fragment implements OnClickListener {
         login = view.findViewById(R.id.already_user);
         terms_conditions = view.findViewById(R.id.terms_conditions);
         radioGroup = view.findViewById(R.id.radioGroup);
+        radioButton1=view.findViewById(R.id.radioButtonOption1);
+        radioButton2= view.findViewById(R.id.radioButtonOption2);
+
         
 
         // Initialize Firebase Auth and Firestore
