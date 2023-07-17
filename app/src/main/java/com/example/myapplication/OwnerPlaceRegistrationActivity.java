@@ -26,6 +26,7 @@ public class OwnerPlaceRegistrationActivity extends AppCompatActivity {
     private EditText placeAddressEditText;
     private EditText placeDescriptionEditText;
     private Button saveButton;
+    private Spinner spinner;
 
     private FirebaseFirestore db;
 
@@ -52,7 +53,7 @@ public class OwnerPlaceRegistrationActivity extends AppCompatActivity {
                 savePlaceDetails(ownerId);
             }
         });
-        Spinner spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.plasec, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -72,39 +73,42 @@ public class OwnerPlaceRegistrationActivity extends AppCompatActivity {
 
     }
 
-    private void savePlaceDetails(String ownerId) {
-        // Retrieve the place details from the input fields
-        String placeName = placeNameEditText.getText().toString();
-        String placeAddress = placeAddressEditText.getText().toString();
-        String placeDescription = placeDescriptionEditText.getText().toString();
+private void savePlaceDetails(String ownerId) {
+    // Retrieve the place details from the input fields
+    String placeName = placeNameEditText.getText().toString();
+    String placeAddress = placeAddressEditText.getText().toString();
+    String placeDescription = placeDescriptionEditText.getText().toString();
+    String placeType = spinner.getSelectedItem().toString();
 
-        // Create a new document in the "Places" collection
-        DocumentReference placeRef = db.collection("Places").document();
+    // Create a new document in the "Places" collection
+    DocumentReference placeRef = db.collection("Places").document();
 
-        // Create a HashMap to store the place details
-        Map<String, Object> placeInfo = new HashMap<>();
-        placeInfo.put("name", placeName);
-        placeInfo.put("address", placeAddress);
-        placeInfo.put("description", placeDescription);
-        placeInfo.put("ownerId", ownerId); // Associate the owner with the place
+    // Create a HashMap to store the place details
+    Map<String, Object> placeInfo = new HashMap<>();
+    placeInfo.put("name", placeName);
+    placeInfo.put("address", placeAddress);
+    placeInfo.put("description", placeDescription);
+    placeInfo.put("ownerId", ownerId); // Associate the owner with the place
+    placeInfo.put("placeType", placeType); // Add the selected place type
 
-        // Set the place information in the Firestore document
-        placeRef.set(placeInfo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Document successfully written
-                        Toast.makeText(OwnerPlaceRegistrationActivity.this, "Place details saved successfully.", Toast.LENGTH_SHORT).show();
-                        // Optionally, you can navigate to another activity or perform further actions
-                        finish(); // Finish the activity after saving the place details
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Error writing document
-                        Toast.makeText(OwnerPlaceRegistrationActivity.this, "Failed to save place details.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+    // Set the place information in the Firestore document
+    placeRef.set(placeInfo)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // Document successfully written
+                    Toast.makeText(OwnerPlaceRegistrationActivity.this, "Place details saved successfully.", Toast.LENGTH_SHORT).show();
+                    // Optionally, you can navigate to another activity or perform further actions
+                    finish(); // Finish the activity after saving the place details
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Error writing document
+                    Toast.makeText(OwnerPlaceRegistrationActivity.this, "Failed to save place details.", Toast.LENGTH_SHORT).show();
+                }
+            });
+}
+
 }
